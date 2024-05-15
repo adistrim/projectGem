@@ -8,9 +8,6 @@ ehthumbs.db
 # Ignore node_modules directory
 node_modules/
 
-# Ignore any compiled files
-*.js
-
 # Ignore any log files
 *.log
 
