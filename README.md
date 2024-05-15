@@ -2,8 +2,35 @@
 
 This project is a web application utilizing Google's Gemini API for chat interactions.
 
+## Running the Application
 
-**Contributions are welcome!**
+**I have no plans to deploy this on a server**. If anyone wants to replicate it, follow these steps:
+
+1. Obtain the API key from Google.
+2. Create a `.env` file in the project root directory.
+3. Add the API key to the `.env` file with the name `GEMINI_API_KEY`.
+
+### Running with npm
+_Install dependencies_
+```bash
+npm install
+```
+_Start the application_
+```bash
+npm start
+```
+
+### Running with Docker
+_Build the Docker image_
+```bash
+docker build -t projectgem .
+```
+_Run the Docker container_
+```bash
+docker run -d -p 3000:3000 projectgem
+```
+
+### **Contributions are welcome!**
 
 ## License
 
