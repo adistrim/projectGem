@@ -2,6 +2,11 @@
 
 This project is a web application utilizing Google's Gemini API for chat interactions.
 
+Users can choose between 3 versions of Gemini:
+1. Gemini 1.0 Pro
+2. Gemini 1.5 Flash `(default)`
+3. Gemini 1.5 Pro
+
 ## Running the Application
 
 **I have no plans to deploy this on a server**. If anyone wants to replicate it, follow these steps:
