@@ -20,7 +20,7 @@
             "dest": "/src/app.js"
         },
         {
-            "src": "/(.+)",
+            "src": "/(.*)",
             "dest": "/public/$1"
         }
     ]
