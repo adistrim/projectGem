@@ -16,15 +16,11 @@
     ],
     "routes": [
         {
-            "src": "/chat",
+            "src": "/api/(.*)",
             "dest": "/src/app.js"
         },
         {
-            "src": "/(.*)",
-            "dest": "/src/app.js"
-        },
-        {
-            "src": "/(.*)",
+            "src": "/(.+)",
             "dest": "/public/$1"
         }
     ]
