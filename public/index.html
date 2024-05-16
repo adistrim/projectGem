@@ -26,7 +26,7 @@
                 if (userInput.trim() === "") return;
                 const selectedModel = document.getElementById("model-select").value;
                 document.getElementById("loading-spinner").style.display = "block";
-                const response = await fetch("/chat", {
+                const response = await fetch("/api/chat", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
