@@ -28,6 +28,7 @@ app.post("/chat", async (req, res) => {
     const userInput = req.body.input;
     const result = await chatSession.sendMessage(userInput);
     res.send(result.response.text());
+    res.send("Hello from /chat endpoint");
 });
 
 app.listen(port, () => {
