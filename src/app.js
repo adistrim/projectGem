@@ -13,6 +13,8 @@ const genAI = new GoogleGenerativeAI(apiKey);
 app.use(express.static("public"));
 app.use(bodyParser.json());
 
+const chatSessions = {};
+
 app.post("/chat", async (req, res) => {
     const selectedModel = req.body.model;
     const modelConfig = models[selectedModel];
@@ -22,11 +24,26 @@ app.post("/chat", async (req, res) => {
     }
 
     const { generationConfig, safetySettings } = modelConfig;
-    const model = genAI.getGenerativeModel({ model: selectedModel });
-    const chatSession = model.startChat({ generationConfig, safetySettings, history: [] });
+
+    let chatSession = chatSessions[selectedModel];
+    if (!chatSession) {
+        const model = genAI.getGenerativeModel({ model: selectedModel });
+        chatSession = model.startChat({ generationConfig, safetySettings, history: [] });
+        chatSessions[selectedModel] = chatSession;
+        console.log(`New chat session created for model: ${selectedModel}`);
+    } else {
+        console.log(`Existing chat session found for model: ${selectedModel}`);
+    }
 
     const userInput = req.body.input;
     const result = await chatSession.sendMessage(userInput);
+
+    if (!chatSession.history) {
+        chatSession.history = [];
+    }
+
+    chatSession.history.push({ input: userInput, response: result.response.text() });
+
     res.send(result.response.text());
 });
 

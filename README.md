@@ -1,6 +1,6 @@
 # ProjectGem
 
-This project is a web application utilizing Google's Gemini API for chat interactions.
+This project is a web application utilizing Google's Gemini API for chat interactions. Chat session history is maintained, allowing the model to contextualize responses based on previous interactions.
 
 Users can choose between 3 versions of Gemini:
 1. Gemini 1.0 Pro
