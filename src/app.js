@@ -14,6 +14,7 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 
 app.post("/chat", async (req, res) => {
+    console.log("Received request:", req.body);
     const selectedModel = req.body.model;
     const modelConfig = models[selectedModel];
 
