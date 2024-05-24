@@ -1,31 +1,31 @@
-const express = require("express");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const dotenv = require("dotenv");
-const bodyParser = require("body-parser");
-const models = require("./models");
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
+import models from "@/models/models";
 
 dotenv.config();
-const app = express();
-const port = process.env.PORT || 3000;
+
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
-app.use(express.static("public"));
-app.use(bodyParser.json());
-
 const chatSessions = {};
 
-app.post("/chat", async (req, res) => {
-    const selectedModel = req.body.model;
+export async function POST(req) {
+    const selectedModel = await req.json().then((data) => data.model);
     const modelConfig = models[selectedModel];
 
     if (!modelConfig) {
-        return res.status(400).json({ error: "Invalid model selected" });
+        return new Response(JSON.stringify({ error: "Invalid model selected" }), {
+            status: 400,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
     }
 
     const { generationConfig, safetySettings } = modelConfig;
 
     let chatSession = chatSessions[selectedModel];
+
     if (!chatSession) {
         const model = genAI.getGenerativeModel({ model: selectedModel });
         chatSession = model.startChat({ generationConfig, safetySettings, history: [] });
@@ -35,7 +35,7 @@ app.post("/chat", async (req, res) => {
         console.log(`Existing chat session found for model: ${selectedModel}`);
     }
 
-    const userInput = req.body.input;
+    const userInput = (await req.json()).input;
     const result = await chatSession.sendMessage(userInput);
 
     if (!chatSession.history) {
@@ -44,9 +44,10 @@ app.post("/chat", async (req, res) => {
 
     chatSession.history.push({ input: userInput, response: result.response.text() });
 
-    res.send(result.response.text());
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port:${port}`);
-});
+    return new Response(result.response.text(), {
+        status: 200,
+        headers: {
+            "Content-Type": "text/plain",
+        },
+    });
+}
